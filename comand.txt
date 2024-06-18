@@ -1,0 +1,51 @@
+
+kubectl apply -f .\elasticsearch\elasticsearch-pv.yaml
+kubectl apply -f .\elasticsearch\elasticsearch-pvc.yaml
+kubectl apply -f .\elasticsearch\elasticsearch-deployment.yaml
+kubectl apply -f .\elasticsearch\elasticsearch-service.yaml
+
+kubectl apply -f .\kibana\kibana-deployment.yaml
+kubectl apply -f .\kibana\kibana-service.yaml
+
+kubectl apply -f .\logstash\logstash-pv.yaml
+kubectl apply -f .\logstash\logstash-pvc.yaml
+kubectl apply -f .\logstash\logstash-configmap.yaml
+kubectl apply -f .\logstash\logstash-deployment.yaml
+
+----------------------------------------------------------------
+
+kubectl delete -f .\kibana\kibana-service.yaml
+kubectl delete -f .\kibana\kibana-deployment.yaml
+
+kubectl delete -f .\logstash\logstash-deployment.yaml
+kubectl delete -f .\logstash\logstash-configmap.yaml
+kubectl delete -f .\logstash\logstash-pvc.yaml
+kubectl delete -f .\logstash\logstash-pv.yaml
+
+kubectl delete -f .\elasticsearch\elasticsearch-service.yaml
+kubectl delete -f .\elasticsearch\elasticsearch-deployment.yaml
+kubectl delete -f .\elasticsearch\elasticsearch-pvc.yaml
+kubectl delete -f .\elasticsearch\elasticsearch-pv.yaml
+
+------------------------------------------------------------------
+
+kubectl get svc kibana
+
+http://localhost:31883
+
+kubectl get pods
+kubectl get services
+kubectl get pv
+kubectl get pvc
+
+kubectl exec -it logstash-589b7f68dd-lcjtx -- /bin/sh
+cd logs
+ls
+echo "prueba1" > /usr/share/logstash/logs/log1.log
+echo "prueba2" > /usr/share/logstash/logs/log2.log
+echo "prueba3" > /usr/share/logstash/logs/log3.log
+exit
+
+
+
+

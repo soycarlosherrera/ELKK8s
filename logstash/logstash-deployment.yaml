@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+        - name: logstash
+          image: docker.elastic.co/logstash/logstash:7.17.21
+          ports:
+            - containerPort: 5044
+          env:
+            - name: ELASTICSEARCH_HOST
+              value: "elasticsearch"
+            - name: ELASTICSEARCH_PORT
+              value: "9200"
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "250m" 
+          volumeMounts:
+            - name: logstash-logs
+              mountPath: /usr/share/logstash/logs
+            - name: logstash-config
+              mountPath: /usr/share/logstash/pipeline
+      volumes:
+        - name: logstash-logs
+          persistentVolumeClaim:
+            claimName: logstash-pvc
+        - name: logstash-config
+          configMap:
+            name: logstash-config
